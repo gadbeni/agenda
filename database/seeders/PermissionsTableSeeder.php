@@ -28,11 +28,13 @@ class PermissionsTableSeeder extends Seeder
         }
 
         Permission::generateFor('menus');
-
         Permission::generateFor('roles');
-
         Permission::generateFor('users');
-
         Permission::generateFor('settings');
+        Permission::create(['key' => 'browse_clearcache', 'table_name' => null]);
+
+        Permission::generateFor('events_rooms');
+        Permission::generateFor('assistants');
+
     }
 }

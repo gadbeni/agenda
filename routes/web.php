@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Controllers
+use App\Http\Controllers\EventsController;
+use App\Http\Controllers\AppointmentsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +28,13 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+
+    // Eventos
+    Route::resource('events', EventsController::class);
+
+    // Agenda
+    Route::resource('appointments', AppointmentsController::class);
+    Route::get('appointments/ajax/list', [AppointmentsController::class, 'list']);
 });
 
 // Clear cache
