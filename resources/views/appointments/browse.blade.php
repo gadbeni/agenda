@@ -5,13 +5,10 @@
 @section('page_header')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8" style="margin-bottom: 0px">
                 <h1 class="page-title">
                     <i class="voyager-calendar"></i> Calendario de Eventos
                 </h1>
-            </div>
-            <div class="col-md-4">
-
             </div>
         </div>
     </div>
@@ -22,13 +19,9 @@
         @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-bordered">
-                    <div class="panel-body">
-                        <div id='wrap'>
-                            <div id='calendar'></div>
-                            <div style='clear:both'></div>
-                        </div>
-                    </div>
+                <div id='wrap'>
+                    <div id='calendar'></div>
+                    <div style='clear:both'></div>
                 </div>
             </div>
         </div>
@@ -68,8 +61,8 @@
                             <input type="text" name="applicant" class="form-control" placeholder="" required />
                         </div>
                         <div class="form-group">
-                            <label for="name">Asitente</label>
-                            <select name="assistant_id" class="form-control select2" required>
+                            <label for="name">Asistente</label>
+                            <select name="assistant_id[]" multiple class="form-control select2" required>
                                 <option value="">-- Seleccione al asistente al evento --</option>
                                 @foreach (\App\Models\Assistant::where('deleted_at', NULL)->get() as $item)
                                     <option value="{{ $item->id }}">{{ $item->full_name }}</option>
@@ -92,50 +85,59 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-calendar"></i> Viendo evento</h4>
+                    <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
                     <div class="panel panel-bordered" style="padding-bottom:5px;">
                         <div class="row">
                             <div class="col-md-12" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Nombre del evento</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Nombre del evento</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
-                                    <p id="label-topic">Value</p>
+                                    <p id="label-topic"></p>
                                 </div>
                                 <hr style="margin:0;">
                             </div>
                             <div class="col-md-12" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Descripción</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Descripción</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
-                                    <p id="label-description">Value</p>
+                                    <p id="label-description"></p>
                                 </div>
                                 <hr style="margin:0;">
                             </div>
                             <div class="col-md-12" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Lugar</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Lugar</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
-                                    <p id="label-place">Value</p>
+                                    <p id="label-place"></p>
                                 </div>
                                 <hr style="margin:0;">
                             </div>
                             <div class="col-md-12" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Solicitante</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Solicitante</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
-                                    <p id="label-applicant">Value</p>
+                                    <p id="label-applicant"></p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>
+                            <div class="col-md-12" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Asistente(s)</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-assistants"></p>
                                 </div>
                                 <hr style="margin:0;">
                             </div>
                             <div class="col-md-6" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Hora de inicio</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Hora de inicio</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
                                     <p id="label-start"></p>
@@ -143,7 +145,7 @@
                             </div>
                             <div class="col-md-6" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
-                                    <h4 class="panel-title">Hora de finalización</h4>
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Hora de finalización</h4>
                                 </div>
                                 <div class="panel-body" style="padding-top:0;">
                                     <p id="label-finish"></p>
@@ -164,7 +166,7 @@
     <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
     <style> 
         #wrap {
-            width: 100%;
+            width: 80%;
             margin: 0 auto;
             overflow: auto;
             }
@@ -220,9 +222,11 @@
 @section('javascript')
     <script src="{{ asset('js/calendar.js') }}"></script>
     <script src="{{ asset('vendor/moment.js/moment.js') }}"></script>
+    <script src="{{ asset('vendor/moment.js/moment-with-locales.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(async function() {
+            moment.locale("es");
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -281,11 +285,11 @@
                     right: 'prev,next today'
                 },
                 editable: true,
-                firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+                firstDay: 0, //  1(Monday) this can be changed to 0(Sunday) for the USA system
                 selectable: true,
                 defaultView: 'month',
                 
-                axisFormat: 'h:mm',
+                axisFormat: 'HH:mm',
                 columnFormat: {
                     month: 'ddd',    // Mon
                     week: 'ddd d', // Mon 7
@@ -313,7 +317,6 @@
                 },
                 droppable: true, // this allows things to be dropped onto the calendar !!!
                 drop: function(date, allDay) { // this function is called when something is dropped
-                
                     // retrieve the dropped element's stored Event Object
                     var originalEventObject = $(this).data('eventObject');
                     
@@ -340,20 +343,26 @@
 	    });
 
         async function getInfo(id){
-            console.log(id)
             let { appointment } = await fetch('{{ url("admin/appointments/") }}/'+id)
                                 .then(response => response.json())
                                 .then(res => res);
-                 console.log(appointment)               
+             
             $('#view_modal').modal('show');
             $('#label-topic').text(appointment.topic);
             $('#label-description').text(appointment.description ? appointment.description : 'No definido');
             $('#label-place').text(appointment.place);
             $('#label-applicant').text(appointment.applicant);
 
+            let assistants = '';
+            appointment.details.map(item => {
+                assistants += item.assistant.full_name+', ';
+            });
+            $('#label-assistants').text(assistants.substring(0, assistants.length-2));
+
             let start = new Date(appointment.start);
             let finish = new Date(appointment.finish);
             let allDay = start.getHours() == 0 && finish.getHours() == 0 ? true : false;
+            $('#view_modal .modal-title').html(`<i class="voyager-calendar"></i> ${moment(start).format('dddd, DD [de] MMMM [de] YYYY')}`);
             if(allDay){
                 $('#label-start').text('No definida');
                 $('#label-finish').text('No definida');
@@ -361,6 +370,25 @@
                 $('#label-start').text(moment(start).format('h:mm a'));
                 $('#label-finish').text(moment(finish).format('h:mm a'));
             }
+        }
+
+        function editDateEvent(event){
+            let id = event.id;
+            let form = {
+                start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
+                finish: event.end ? moment(event.end).format('YYYY-MM-DD HH:mm:ss') : moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
+                ajax: 1,
+                _token: "{{ csrf_token() }}",
+                _method: "PUT"
+            }
+            let url = "{{ url('admin/appointments') }}/"+id;
+            $.post(url, form, function(res){
+                if(res.success){
+                    toastr.info(res.success, 'Bien hecho!');
+                }else{
+                    toastr.error(res.error, 'Oops!');
+                }
+            })
         }
     </script>
 @stop

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,10 @@ Route::group(['prefix' => 'admin'], function () {
     // Agenda
     Route::resource('appointments', AppointmentsController::class);
     Route::get('appointments/ajax/list', [AppointmentsController::class, 'list']);
+
+    // Reportes
+    Route::get('reports/appointments', [ReportsController::class, 'appointments_index'])->name('reports.appointments.index');
+    Route::post('reports/appointments/generate', [ReportsController::class, 'appointments_generate'])->name('reports.appointments.generate');
 });
 
 // Clear cache

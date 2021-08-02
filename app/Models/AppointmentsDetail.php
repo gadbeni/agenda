@@ -13,4 +13,8 @@ class AppointmentsDetail extends Model
     protected $fillable = [
         'appointment_id', 'assistant_id', 'start', 'finish'
     ];
+
+    public function assistant(){
+        return $this->belongsTo(Assistant::class, 'assistant_id');
+    }
 }

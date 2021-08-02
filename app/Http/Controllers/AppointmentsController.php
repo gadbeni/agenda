@@ -54,10 +54,13 @@ class AppointmentsController extends Controller
                     'start' => $request->start,
                     'finish' => $request->finish
                 ]);
-            AppointmentsDetail::create([
-                'appointment_id' => $appointment->id,
-                'assistant_id' => $request->assistant_id
-            ]);
+            
+            foreach ($request->assistant_id as $assistant_id) {
+                AppointmentsDetail::create([
+                    'appointment_id' => $appointment->id,
+                    'assistant_id' => $assistant_id
+                ]);
+            }
 
             DB::commit();
 
@@ -83,7 +86,7 @@ class AppointmentsController extends Controller
      */
     public function show($id)
     {
-        $appointment = Appointment::with('details')->where('id', $id)->where('deleted_at', NULL)->first();
+        $appointment = Appointment::with('details.assistant')->where('id', $id)->where('deleted_at', NULL)->first();
         return response()->json(['appointment' => $appointment]);
     }
 
@@ -107,7 +110,23 @@ class AppointmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            Appointment::where('id', $id)->update([
+                'start' => $request->start,
+                'finish' => $request->finish
+            ]);
+
+            if($request->ajax){
+                return response()->json(['success' => 'Evento editado correctamente.']);
+            }
+            return redirect()->route('appointments.index')->with(['message' => 'Registro guardado exitosamente.', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            if($request->ajax){
+                return response()->json(['error' => 'Ocurrió un erro.']);
+            }
+            return redirect()->route('appointments.create')->with(['message' => 'Ocurrio un error.', 'alert-type' => 'error']);
+        }
     }
 
     /**

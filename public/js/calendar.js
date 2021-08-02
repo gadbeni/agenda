@@ -64,7 +64,7 @@
         monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
         monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
         dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sábado'],
-        dayNamesShort: ['Do','Lun','Mar','Mie','Jue','Vie','Sab'],
+        dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
         buttonText: {
             prev: "<span class='fc-text-arrow'>‹</span>",
             next: "<span class='fc-text-arrow'>›</span>",
@@ -3983,6 +3983,7 @@
                 " class='" + classes.join(' ') + "'" +
                 " class='" + classes.join(' ') + "'" +
                 "onclick='getInfo("+id+")'" +
+                "id='fc-event-"+id+"'" +
                 " style=" +
                     "'" +
                     "position:absolute;" +
@@ -4227,6 +4228,7 @@
     
                     if (isInBounds && (isAllDay || dayDelta || minuteDelta)) { // changed!
                         eventDrop(this, event, dayDelta, isAllDay ? 0 : minuteDelta, isAllDay, ev, ui);
+                        console.log(event)
                     }
                     else { // either no change or out-of-bounds (draggable has already reverted)
     
@@ -5343,7 +5345,7 @@
             if (url) {
                 html += "<a href='" + htmlEscape(url) + "' target='_blank'";
             }else{
-                html += `<div onclick="getInfo(${id})"`;
+                html += `<div onclick="getInfo(${id})" id="fc-event-${id}"`;
             }
             html +=
                 " class='" + classNames.join(' ') + "'" +
@@ -5681,6 +5683,7 @@
                     trigger('eventDragStop', eventElement, event, ev, ui);
                     if (dayDelta) {
                         eventDrop(this, event, dayDelta, 0, event.allDay, ev, ui);
+                        editDateEvent(event);
                     }else{
                         eventElement.css('filter', ''); // clear IE opacity side-effects
                         showEvents(event, eventElement);
