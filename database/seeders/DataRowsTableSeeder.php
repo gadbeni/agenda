@@ -529,7 +529,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{}',
-                'order' => 3,
+                'order' => 4,
             ),
             32 => 
             array (
@@ -545,7 +545,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{}',
-                'order' => 4,
+                'order' => 5,
             ),
             33 => 
             array (
@@ -561,7 +561,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 5,
+                'order' => 8,
             ),
             34 => 
             array (
@@ -577,7 +577,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 6,
+                'order' => 10,
             ),
             35 => 
             array (
@@ -593,7 +593,71 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
+                'order' => 11,
+            ),
+            36 => 
+            array (
+                'id' => 37,
+                'data_type_id' => 5,
+                'field' => 'email',
+                'type' => 'text',
+                'display_name' => 'Email',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"validation":{"rule":"required|max:50"},"display":{"width":6}}',
+                'order' => 6,
+            ),
+            37 => 
+            array (
+                'id' => 38,
+                'data_type_id' => 5,
+                'field' => 'phone',
+                'type' => 'text',
+                'display_name' => 'Nro de celular',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"validation":{"rule":"required|max:9"},"display":{"width":6}}',
                 'order' => 7,
+            ),
+            38 => 
+            array (
+                'id' => 39,
+                'data_type_id' => 5,
+                'field' => 'assistant_belongsto_user_relationship',
+                'type' => 'relationship',
+                'display_name' => 'Usuario',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"model":"TCG\\\\Voyager\\\\Models\\\\User","table":"users","type":"belongsTo","column":"user_id","key":"id","label":"name","pivot_table":"appointments","pivot":"0","taggable":"0"}',
+                'order' => 9,
+            ),
+            39 => 
+            array (
+                'id' => 40,
+                'data_type_id' => 5,
+                'field' => 'user_id',
+                'type' => 'text',
+                'display_name' => 'User Id',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 3,
             ),
         ));
         

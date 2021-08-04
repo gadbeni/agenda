@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.5",
         "laraveles/spanish": "^1.5",
         "orangehill/iseed": "^3.0",
-        "tcg/voyager": "^1.4"
+        "tcg/voyager": "^1.4",
+        "twilio/sdk": "^6.27"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

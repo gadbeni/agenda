@@ -26,7 +26,6 @@ Route::get('/', function () {
     return redirect('admin');
 });
 
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
@@ -38,6 +37,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('appointments/ajax/list', [AppointmentsController::class, 'list']);
 
     // Reportes
+    Route::get('index/details/{start}', [AppointmentsController::class, 'index_details']);
     Route::get('reports/appointments', [ReportsController::class, 'appointments_index'])->name('reports.appointments.index');
     Route::post('reports/appointments/generate', [ReportsController::class, 'appointments_generate'])->name('reports.appointments.generate');
 });

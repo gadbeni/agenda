@@ -64,7 +64,7 @@
                                 <tr>
                                     <td><b>Descripción</b></td>
                                     <td>:</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td>{{ $item->description ?? 'No definida' }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Lugar</b></td>

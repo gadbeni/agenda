@@ -18,6 +18,7 @@ class PermissionsTableSeeder extends Seeder
             'browse_database',
             'browse_media',
             'browse_compass',
+            'browse_clear-cache'
         ];
 
         foreach ($keys as $key) {
@@ -31,10 +32,11 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('roles');
         Permission::generateFor('users');
         Permission::generateFor('settings');
-        Permission::create(['key' => 'browse_clearcache', 'table_name' => null]);
 
         Permission::generateFor('events_rooms');
         Permission::generateFor('assistants');
+        Permission::generateFor('appointments');
+        Permission::create(['key' => 'browse_reportsappointments', 'table_name' => 'reports']);
 
     }
 }

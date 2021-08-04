@@ -8,3 +8,12 @@
     /* background-image: linear-gradient(#D5D8DC, #FFF) !important; */
     background-color: #ececec;
 }
+
+@media (max-width: 767px) {
+    .page-content .div-phone{
+        padding: 0px;
+    }
+    .panel-body{
+        padding: 20px 10px !important
+    }
+}

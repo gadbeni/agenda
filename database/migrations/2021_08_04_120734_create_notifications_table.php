@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssistantsTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateAssistantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('assistants', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name')->nullable();
-            $table->integer('funcionario_id')->nullable();
+            $table->string('type')->nullable();
+            $table->string('to')->nullable();
             $table->text('detail')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
+            $table->integer('model_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +30,6 @@ class CreateAssistantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assistants');
+        Schema::dropIfExists('notifications');
     }
 }

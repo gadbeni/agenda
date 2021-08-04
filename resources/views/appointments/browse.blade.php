@@ -37,38 +37,7 @@
                         <h4 class="modal-title"><i class="voyager-calendar"></i> Agregar evento</h4>
                     </div>
                     <div class="modal-body">
-                        @csrf
-                        <input type="hidden" id="input-start">
-                        <input type="hidden" id="input-finish">
-                        <input type="hidden" name="start">
-                        <input type="hidden" name="finish">
-                        <input type="hidden" name="all_day">
-                        {{-- <input type="hidden" name="ajax" value="1"> --}}
-                        <div class="form-group">
-                            <label for="name">Título</label>
-                            <input type="text" name="topic" class="form-control" placeholder="Conferencia de prensa" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Descripción</label>
-                            <textarea name="description" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Lugar del evento</label>
-                            <input type="text" name="place" class="form-control" placeholder="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Solicitante</label>
-                            <input type="text" name="applicant" class="form-control" placeholder="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Asistente</label>
-                            <select name="assistant_id[]" multiple class="form-control select2" required>
-                                <option value="">-- Seleccione al asistente al evento --</option>
-                                @foreach (\App\Models\Assistant::where('deleted_at', NULL)->get() as $item)
-                                    <option value="{{ $item->id }}">{{ $item->full_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @include('appointments.partials.form')
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -89,7 +58,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="panel panel-bordered" style="padding-bottom:5px;">
-                        <div class="row">
+                        <div class="row" id="div-view">
+                            <div class="col-md-12 text-right" style="margin: 0px">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm btn-edit"><i class="voyager-edit"></i></button>
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete"><i class="voyager-trash"></i></button>
+                                </div>
+                            </div>
                             <div class="col-md-12" style="margin: 0px">
                                 <div class="panel-heading" style="border-bottom:0;">
                                     <h4 class="panel-title" style="padding-bottom: 10px">Nombre del evento</h4>
@@ -152,6 +127,35 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Form edit --}}
+                        <form id="form-edit" action="#" method="POST">
+                            @method('PUT')
+                            <div id="div-edit" style="display: none">
+                                @include('appointments.partials.form')
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        {{-- Form delete --}}
+                        <form id="form-delete" action="#" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <div id="div-delete" style="display: none">
+                                <p class="text-muted">Desea elimianr el siguiente evento de la agenda?</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 {{-- <div class="modal-footer">
@@ -340,16 +344,46 @@
                 },
                 events
             });
+
+            // Edita event
+            $('.btn-edit').click(function(){
+                $('#div-view').fadeOut('fast', () => $('#div-edit').fadeIn());
+                let event = $('#view_modal .btn-edit').data('event');
+                $('#form-edit input[name=topic]').val(event.topic);
+                $('#form-edit textarea[name=description]').val(event.description);
+                $('#form-edit input[name=place]').val(event.place);
+                $('#form-edit input[name=applicant]').val(event.applicant);
+
+                let assistants = '';
+                event.details.map(detail => {
+                    assistants += +',';
+                    $("#select-assistant_id option[value='" + detail.assistant.id + "']").prop("selected", true);
+                });
+
+                let url = "{{ url('admin/appointments') }}/"+event.id;
+                $('#form-edit').attr('action', url);
+            });
+
+            // Eliminar event
+            $('.btn-delete').click(function(){
+                $('#div-view').fadeOut('fast', () => $('#div-delete').fadeIn());
+                let event = $('#view_modal .btn-delete').data('event');
+                let url = "{{ url('admin/appointments') }}/"+event.id;
+                $('#form-delete').attr('action', url);
+            });
 	    });
 
         async function getInfo(id){
+            $('#div-edit').fadeOut('fast', () => $('#div-view').fadeIn());
+            $('#div-delete').fadeOut('fast')
             let { appointment } = await fetch('{{ url("admin/appointments/") }}/'+id)
                                 .then(response => response.json())
                                 .then(res => res);
-             
+            $('#view_modal .btn-edit').data('event', appointment);
+            $('#view_modal .btn-delete').data('event', appointment);
             $('#view_modal').modal('show');
             $('#label-topic').text(appointment.topic);
-            $('#label-description').text(appointment.description ? appointment.description : 'No definido');
+            $('#label-description').text(appointment.description ? appointment.description : 'No definida');
             $('#label-place').text(appointment.place);
             $('#label-applicant').text(appointment.applicant);
 

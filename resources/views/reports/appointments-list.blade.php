@@ -50,7 +50,7 @@
                                                 <tr>
                                                     <td><b>Descripción</b></td>
                                                     <td>:</td>
-                                                    <td>{{ $item->description }}</td>
+                                                    <td>{{ $item->description ?? 'No definida' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>Lugar</b></td>
@@ -90,6 +90,6 @@
 </div>
 <style>
     b{
-        font-weight: 500 !important
+        font-weight: 600 !important
     }
 </style>
