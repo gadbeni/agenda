@@ -20,7 +20,10 @@
                 <div class="dimmer"></div>
                 <div class="panel-content">
                     <img src="{{ $user_avatar }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
-                    <h4>{{ ucwords(Auth::user()->name) }}</h4>
+                    @php
+                        $name = ucwords(Auth::user()->name);
+                    @endphp
+                    <h4>{{ strlen($name) > 15 ? substr($name, 0, 10).'...' : $name }}</h4>
                     <p>{{ Auth::user()->email }}</p>
 
                     <a href="{{ route('voyager.profile') }}" class="btn btn-primary">{{ __('voyager::generic.profile') }}</a>

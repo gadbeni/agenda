@@ -95,7 +95,7 @@ class MenuItemsTableSeeder extends Seeder
                 'parent_id' => NULL,
                 'order' => 7,
                 'created_at' => '2021-06-02 17:55:32',
-                'updated_at' => '2021-08-02 10:03:39',
+                'updated_at' => '2021-08-05 08:49:19',
                 'route' => NULL,
                 'parameters' => '',
             ),
@@ -277,22 +277,6 @@ class MenuItemsTableSeeder extends Seeder
             ),
             16 => 
             array (
-                'id' => 18,
-                'menu_id' => 1,
-                'title' => 'Asistentes',
-                'url' => '',
-                'target' => '_self',
-                'icon_class' => 'voyager-people',
-                'color' => NULL,
-                'parent_id' => 16,
-                'order' => 2,
-                'created_at' => '2021-07-30 12:25:09',
-                'updated_at' => '2021-07-30 12:25:21',
-                'route' => 'voyager.assistants.index',
-                'parameters' => NULL,
-            ),
-            17 => 
-            array (
                 'id' => 19,
                 'menu_id' => 1,
                 'title' => 'Reportes',
@@ -307,7 +291,7 @@ class MenuItemsTableSeeder extends Seeder
                 'route' => NULL,
                 'parameters' => '',
             ),
-            18 => 
+            17 => 
             array (
                 'id' => 20,
                 'menu_id' => 1,
@@ -322,6 +306,22 @@ class MenuItemsTableSeeder extends Seeder
                 'updated_at' => '2021-08-02 13:26:04',
                 'route' => 'reports.appointments.index',
                 'parameters' => 'null',
+            ),
+            18 => 
+            array (
+                'id' => 21,
+                'menu_id' => 1,
+                'title' => 'Asistentes',
+                'url' => '',
+                'target' => '_self',
+                'icon_class' => 'voyager-people',
+                'color' => '#000000',
+                'parent_id' => 16,
+                'order' => 2,
+                'created_at' => '2021-08-05 08:49:07',
+                'updated_at' => '2021-08-05 08:49:19',
+                'route' => 'assistants.index',
+                'parameters' => NULL,
             ),
         ));
         

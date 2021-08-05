@@ -22,5 +22,19 @@ class PermissionRoleTableSeeder extends Seeder
         $role->permissions()->sync(
             $permissions->pluck('id')->all()
         );
+
+        // Permisos de asistente/secretaria
+        $role = Role::where('name', 'attendee')->firstOrFail();
+        $permissions = Permission::whereRaw('table_name = "assistants" or id = 1')->get();
+        $role->permissions()->sync(
+            $permissions->pluck('id')->all()
+        );
+
+        // Permisos de funcionarios
+        $role = Role::where('name', 'assistans')->firstOrFail();
+        $permissions = Permission::whereRaw('id = 1')->get();
+        $role->permissions()->sync(
+            $permissions->pluck('id')->all()
+        );
     }
 }

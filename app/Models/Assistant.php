@@ -10,4 +10,12 @@ class Assistant extends Model
 {
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
+
+    protected $fillable = [
+        'full_name', 'funcionario_id', 'detail', 'email', 'phone', 'user_id'
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

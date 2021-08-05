@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\AssistantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,10 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+
+    // Asistentes a eventos
+    Route::resource('assistants', AssistantsController::class);
+    Route::get('assistants/ajax/list', [AssistantsController::class, 'list']);
 
     // Eventos
     Route::resource('events', EventsController::class);
