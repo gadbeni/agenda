@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     // Eventos
     Route::resource('events', EventsController::class);
+    Route::get('events/ajax/list', [EventsController::class, 'list']);
 
     // Agenda
     Route::resource('appointments', AppointmentsController::class);
@@ -45,6 +46,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('index/details/{start}', [AppointmentsController::class, 'index_details']);
     Route::get('reports/appointments', [ReportsController::class, 'appointments_index'])->name('reports.appointments.index');
     Route::post('reports/appointments/generate', [ReportsController::class, 'appointments_generate'])->name('reports.appointments.generate');
+    Route::get('reports/events', [ReportsController::class, 'events_index'])->name('reports.events.index');
+    Route::post('reports/events/generate', [ReportsController::class, 'events_generate'])->name('reports.events.generate');
 });
 
 // Clear cache

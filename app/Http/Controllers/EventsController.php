@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 // Models
 use App\Models\Event;
@@ -17,6 +20,11 @@ class EventsController extends Controller
     public function index()
     {
         return view('events.browse');
+    }
+
+    public function list(){
+        $reg = Event::where('deleted_at', NULL)->get();
+        return response()->json(['reg' => $reg]);
     }
 
     /**
@@ -37,25 +45,24 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        $start = $request->date.' '.$request->start;
-        $finish = $request->date.' '.$request->finish;
-        $event = Event::where('deleted_at', NULL)
-                    ->whereRaw("(start < '$finish') or (finish > '$start' and finish < '$finish' )")
-                    ->get();
-        dd($start, $finish,$event);
+        DB::beginTransaction();
         try {
             Event::create([
+                'user_id' => Auth::user()->id,
                 'events_room_id' => $request->events_room_id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'applicant' => $request->applicant,
-                'start' => $request->date.' '.$request->start,
-                'finish' => $request->date.' '.$request->finish
+                'start' => $request->start,
+                'finish' => $request->finish
             ]);
-            return redirect()->route('events.index')->with(['message' => 'Registro guardado exitosamente.', 'alert-type' => 'success']);
+
+            DB::commit();
+            return redirect()->route('events.index')->with(['message' => 'Evento guardado exitosamente.', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
-            throw $th;
-            return redirect()->route('events.create')->with(['message' => 'Ocurrio un error.', 'alert-type' => 'error']);
+            dd($th);
+            DB::rollback();
+            return redirect()->route('events.index')->with(['message' => 'Ocurrio un error.', 'alert-type' => 'error']);
         }
     }
 
@@ -67,7 +74,8 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::with('events_room')->where('id', $id)->where('deleted_at', NULL)->first();
+        return response()->json(['event' => $event]);
     }
 
     /**
@@ -90,7 +98,30 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $event = Event::findOrFail($id);
+            $event->name = $request->name ?? $event->name;
+            $event->description = $request->description ?? $event->description;
+            $event->applicant = $request->applicant ?? $event->applicant;
+            $event->events_room_id = $request->events_room_id  ?? $event->events_room_id;
+            $event->start = $request->start ?? $event->start;
+            $event->finish = $request->finish ?? $event->finish;
+            $event->save();
+
+            DB::commit();
+            if($request->ajax){
+                return response()->json(['success' => 'Evento editado correctamente.']);
+            }
+            return redirect()->route('events.index')->with(['message' => 'Evento editado exitosamente.', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollback();
+            if($request->ajax){
+                return response()->json(['error' => 'Ocurrió un erro.']);
+            }
+            return redirect()->route('events.index')->with(['message' => 'Ocurrio un error.', 'alert-type' => 'error']);
+        }
     }
 
     /**
@@ -101,6 +132,9 @@ class EventsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        $event->deleted_at = Carbon::now();
+        $event->save();
+        return redirect()->route('events.index')->with(['message' => 'Evento eliminado exitosamente.', 'alert-type' => 'success']);
     }
 }

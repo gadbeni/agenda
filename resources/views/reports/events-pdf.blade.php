@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Agenda de Eventos</title>
+    <title>Agenda de Salones de Eventos</title>
     <!-- Favicon -->
     <?php $admin_favicon = Voyager::setting('admin.icon_image', ''); ?>
     @if($admin_favicon == '')
@@ -22,7 +22,7 @@
             <td align="right">
                 <h3 style="margin: 0px; margin-bottom: 10px">
                     GOBIERNO AUTÓNOMO DEPARTAMENTAL DEL BENI <br>
-                    <small>AGENDA DE EVENTOS</small> <br>
+                    <small>AGENDA DE SALONES DE EVENTOS</small> <br>
                     <small>{{ $range }}</small>
                 </h3>
             </td>
@@ -35,7 +35,6 @@
                     <th width="60px">N&deg;</th>
                     <th>Fecha</th>
                     <th>Detalle</th>
-                    <th>Asistente(s)</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,9 +56,9 @@
                         <td>
                             <table width="100%">
                                 <tr>
-                                    <td width="100px"><b>Título</b></td>
+                                    <td width="100px"><b>Nombre</b></td>
                                     <td>:</td>
-                                    <td>{{ $item->topic }}</td>
+                                    <td>{{ $item->name }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Descripción</b></td>
@@ -69,7 +68,7 @@
                                 <tr>
                                     <td><b>Lugar</b></td>
                                     <td>:</td>
-                                    <td>{{ $item->place }}</td>
+                                    <td>{{ $item->events_room->name }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Solicitante</b></td>
@@ -78,20 +77,13 @@
                                 </tr>
                             </table>
                         </td>
-                        <td>
-                            <ul>
-                                @foreach ($item->details as $detail)
-                                    <li>{{ $detail->assistant->full_name }}</li>
-                                @endforeach
-                            </ul>
-                        </td>
                     </tr>
                     @php
                         $cont++;
                     @endphp
                 @empty
                     <tr>
-                        <td colspan="4"><h4 class="text-center text-muted">No hay eventos agendados</h4></td>
+                        <td colspan="3"><h4 class="text-center text-muted">No hay eventos agendados</h4></td>
                     </tr>
                 @endforelse
             </tbody>

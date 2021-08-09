@@ -5,7 +5,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h3 class="text-muted">Agenda de eventos <br> <small>{{ $range }}</small></h3>
+                            <h3 class="text-muted">Agenda de salón de eventos <br> <small>{{ $range }}</small></h3>
                         </div>
                         <div class="col-md-4 text-right">
                             <div class="btn-group" role="group" aria-label="...">
@@ -21,7 +21,7 @@
                                     <th width="60px">N&deg;</th>
                                     <th>Fecha</th>
                                     <th>Detalles</th>
-                                    <th>Asistente(s)</th>
+                                    {{-- <th>Asistente(s)</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,7 +31,7 @@
                                 @forelse ($reg as $item)
                                     <tr>
                                         <td>{{ $cont }}</td>
-                                        <td width="150px">
+                                        <td>
                                             {{ date('d/m/Y', strtotime($item->start)) }}
                                             <br>
                                             @if (date('H:i', strtotime($item->start)) != '00:00' && date('H:i', strtotime($item->finish)) != '00:00')
@@ -43,9 +43,9 @@
                                         <td>
                                             <table width="100%">
                                                 <tr>
-                                                    <td width="100px"><b>Título</b></td>
+                                                    <td width="100px"><b>Nombre</b></td>
                                                     <td>:</td>
-                                                    <td>{{ $item->topic }}</td>
+                                                    <td>{{ $item->name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>Descripción</b></td>
@@ -55,7 +55,7 @@
                                                 <tr>
                                                     <td><b>Lugar</b></td>
                                                     <td>:</td>
-                                                    <td>{{ $item->place }}</td>
+                                                    <td>{{ $item->events_room->name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>Solicitante</b></td>
@@ -65,11 +65,11 @@
                                             </table>
                                         </td>
                                         <td>
-                                            <ul>
+                                            {{-- <ul>
                                                 @foreach ($item->details as $detail)
                                                     <li>{{ $detail->assistant->full_name }}</li>
                                                 @endforeach
-                                            </ul>
+                                            </ul> --}}
                                         </td>
                                     </tr>
                                     @php
@@ -77,7 +77,7 @@
                                     @endphp
                                     @empty
                                     <tr>
-                                        <td colspan="4"><h4 class="text-center text-muted">No hay eventos agendados</h4></td>
+                                        <td colspan="3"><h4 class="text-center text-muted">No hay eventos agendados</h4></td>
                                     </tr>
                                 @endforelse
                             </tbody>

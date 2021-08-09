@@ -5,13 +5,10 @@
 @section('page_header')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8" style="margin-bottom: 0px">
                 <h1 class="page-title">
-                    <i class="voyager-calendar"></i> Calendario de Eventos
+                    <i class="voyager-calendar"></i> Calendario de Salón de Eventos
                 </h1>
-            </div>
-            <div class="col-md-4">
-
             </div>
         </div>
     </div>
@@ -22,48 +19,25 @@
         @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-bordered">
-                    <div class="panel-body">
-                        <div id='wrap'>
-                            <div id='calendar'></div>
-                            <div style='clear:both'></div>
-                        </div>
-                    </div>
+                <div id='wrap'>
+                    <div id='calendar'></div>
+                    <div style='clear:both'></div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Single delete modal --}}
-    <form action="#" id="create_form" method="POST">
+    {{-- modal create --}}
+    <form action="{{ route('events.store') }}" id="create_form" method="POST">
         <div class="modal modal-info fade" tabindex="-1" id="create_modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="voyager-calendar"></i> Agregar evento</h4>
+                        <h4 class="modal-title"><i class="voyager-calendar"></i> Nuevo evento</h4>
                     </div>
                     <div class="modal-body">
-                        @csrf
-                        <input type="hidden" name="start">
-                        <input type="hidden" name="finish">
-                        <input type="hidden" name="all_day">
-                        <div class="form-group">
-                            <label for="name">Título</label>
-                            <input type="text" name="name" class="form-control" placeholder="Conferencia de prensa" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Descripción</label>
-                            <textarea name="description" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Lugar</label>
-                            <input type="text" name="place" class="form-control" placeholder="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Solicitante</label>
-                            <input type="text" name="applicant" class="form-control" placeholder="" required />
-                        </div>
+                        @include('events.partials.form')
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -73,13 +47,121 @@
             </div>
         </div>
     </form>
+
+    {{-- modal view --}}
+    <div class="modal modal-info fade" tabindex="-1" id="view_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-bordered" style="padding-bottom:5px;">
+                        <div class="row" id="div-view">
+                            <div class="col-md-12 text-right" style="margin: 0px">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm btn-edit"><i class="voyager-edit"></i></button>
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete"><i class="voyager-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Nombre del evento</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-name"></p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>
+                            <div class="col-md-12" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Descripción</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-description"></p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>
+                            <div class="col-md-12" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Lugar</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-place"></p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>
+                            <div class="col-md-12" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Solicitante</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-applicant"></p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>
+                            <div class="col-md-6" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Hora de inicio</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-start"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin: 0px">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h4 class="panel-title" style="padding-bottom: 10px">Hora de finalización</h4>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p id="label-finish"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Form edit --}}
+                        <form id="form-edit" action="#" method="POST">
+                            @method('PUT')
+                            <div id="div-edit" style="display: none">
+                                @include('events.partials.form')
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        {{-- Form delete --}}
+                        <form id="form-delete" action="#" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <div id="div-delete" style="display: none">
+                                <p class="text-muted">Desea elimianr el siguiente evento de la agenda?</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div> --}}
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
     <style> 
         #wrap {
-            width: 100%;
+            width: 80%;
             margin: 0 auto;
             overflow: auto;
             }
@@ -134,9 +216,12 @@
 
 @section('javascript')
     <script src="{{ asset('js/calendar.js') }}"></script>
+    <script src="{{ asset('vendor/moment.js/moment.js') }}"></script>
+    <script src="{{ asset('vendor/moment.js/moment-with-locales.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(async function() {
+            moment.locale("es");
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -169,6 +254,24 @@
             });
             /* initialize the calendar
             -----------------------------------------------------------------*/
+
+            let request = await fetch('{{ url("admin/events/ajax/list") }}')
+                                .then(response => response.json())
+                                .then(res => res);
+            let events = [];
+            request.reg.map(event => {
+                let start = new Date(event.start);
+                let end = new Date(event.finish);
+                let allDay = start.getHours() == 0 && end.getHours() == 0 ? true : false;
+
+                events.push({
+                    id: event.id,
+                    title: event.name,
+                    start, end,
+                    allDay,
+                    className: 'important'
+                });
+            });
             
             var calendar =  $('#calendar').fullCalendar({
                 header: {
@@ -177,11 +280,11 @@
                     right: 'prev,next today'
                 },
                 editable: true,
-                firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+                firstDay: 0, //  1(Monday) this can be changed to 0(Sunday) for the USA system
                 selectable: true,
                 defaultView: 'month',
                 
-                axisFormat: 'h:mm',
+                axisFormat: 'HH:mm',
                 columnFormat: {
                     month: 'ddd',    // Mon
                     week: 'ddd d', // Mon 7
@@ -197,13 +300,18 @@
                 selectHelper: true,
                 select: function(start, finish, allDay) {
                     $('#create_modal').modal('show');
-                    $('#create_modal input[name="start"]').val(start);
-                    $('#create_modal input[name="finish"]').val(finish);
+                    $('#input-start').val(start);
+                    let startAlt = moment(start).format('YYYY-MM-DD HH:mm:ss');
+                    $('#create_modal input[name="start"]').val(startAlt);
+                    
+                    $('#input-finish').val(finish);
+                    let finishAlt = moment(finish).format('YYYY-MM-DD HH:mm:ss');
+                    $('#create_modal input[name="finish"]').val(finishAlt);
+
                     $('#create_modal input[name="all_day"]').val(allDay);
                 },
                 droppable: true, // this allows things to be dropped onto the calendar !!!
                 drop: function(date, allDay) { // this function is called when something is dropped
-                
                     // retrieve the dropped element's stored Event Object
                     var originalEventObject = $(this).data('eventObject');
                     
@@ -225,80 +333,75 @@
                     }
                     
                 },
-                
-                events: [
-                    {
-                        id: 1,
-                        title: 'All Day Event',
-                        start: new Date(y, m, 1)
-                    },
-                    {
-                        id: 2,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d-3, 16, 0),
-                        allDay: false,
-                        className: 'info'
-                    },
-                    {
-                        id: 3,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d+4, 16, 0),
-                        allDay: false,
-                        className: 'info'
-                    },
-                    {
-                        id: 4,
-                        title: 'Meeting',
-                        start: new Date(y, m, d, 10, 30),
-                        allDay: false,
-                        className: 'important'
-                    },
-                    {
-                        id: 5,
-                        title: 'Lunch',
-                        start: new Date(y, m, d, 12, 0),
-                        end: new Date(y, m, d, 14, 0),
-                        allDay: false,
-                        className: 'important'
-                    },
-                    {
-                        id: 6,
-                        title: 'Birthday Party',
-                        start: new Date(y, m, d+1, 19, 0),
-                        end: new Date(y, m, d+1, 22, 30),
-                        allDay: false,
-                    },
-                    {
-                        id: 7,
-                        title: 'Click for Google',
-                        start: new Date(y, m, 28),
-                        end: new Date(y, m, 29),
-                        url: 'https://ccp.cloudaccess.net/aff.php?aff=5188',
-                        className: 'success'
-                    }
-                ],			
+                events
             });
 
-            $('#create_form').on('submit', function(e){
-                e.preventDefault();
-                let form = $('#create_form').serialize();
-                let name = $('#create_form input[name="name"]').val();
-                let start = $('#create_form input[name="start"]').val();
-                let finish = $('#create_form input[name="finish"]').val();
-                let allDay = $('#create_form input[name="all_day"]').val();
-                let url = "{{ route('events.store') }}";
-                calendar.fullCalendar('renderEvent', {
-                        id: 200,
-                        title: name,
-                        start: start,
-                        end: finish,
-                        allDay: allDay
-                    },
-                    true // make the event "stick"
-                );
-                calendar.fullCalendar('unselect');
-                $('#create_modal').modal('hide');
-            })
+            // Edita event
+            $('.btn-edit').click(function(){
+                $('#div-view').fadeOut('fast', () => $('#div-edit').fadeIn());
+                let event = $('#view_modal .btn-edit').data('event');
+                $('#form-edit input[name=name]').val(event.name);
+                $('#form-edit textarea[name=description]').val(event.description);
+                $('#form-edit input[name=applicant]').val(event.applicant);
+                $('#form-edit select[name=events_room_id]').val(event.events_room.id);
+
+                let url = "{{ url('admin/events') }}/"+event.id;
+                $('#form-edit').attr('action', url);
+            });
+
+            // Eliminar event
+            $('.btn-delete').click(function(){
+                $('#div-view').fadeOut('fast', () => $('#div-delete').fadeIn());
+                let event = $('#view_modal .btn-delete').data('event');
+                let url = "{{ url('admin/events') }}/"+event.id;
+                $('#form-delete').attr('action', url);
+            });
 	    });
+
+        async function getInfo(id){
+            $('#div-edit').fadeOut('fast', () => $('#div-view').fadeIn());
+            $('#div-delete').fadeOut('fast')
+            let { event } = await fetch('{{ url("admin/events/") }}/'+id)
+                                .then(response => response.json())
+                                .then(res => res);
+            $('#view_modal .btn-edit').data('event', event);
+            $('#view_modal .btn-delete').data('event', event);
+            $('#view_modal').modal('show');
+            $('#label-name').text(event.name);
+            $('#label-description').text(event.description ? event.description : 'No definida');
+            $('#label-place').text(event.events_room.name);
+            $('#label-applicant').text(event.applicant);
+
+            let start = new Date(event.start);
+            let finish = new Date(event.finish);
+            let allDay = start.getHours() == 0 && finish.getHours() == 0 ? true : false;
+            $('#view_modal .modal-title').html(`<i class="voyager-calendar"></i> ${moment(start).format('dddd, DD [de] MMMM [de] YYYY')}`);
+            if(allDay){
+                $('#label-start').text('No definida');
+                $('#label-finish').text('No definida');
+            }else{
+                $('#label-start').text(moment(start).format('h:mm a'));
+                $('#label-finish').text(moment(finish).format('h:mm a'));
+            }
+        }
+
+        function editDateEvent(event){
+            let id = event.id;
+            let form = {
+                start: moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
+                finish: event.end ? moment(event.end).format('YYYY-MM-DD HH:mm:ss') : moment(event.start).format('YYYY-MM-DD HH:mm:ss'),
+                ajax: 1,
+                _token: "{{ csrf_token() }}",
+                _method: "PUT"
+            }
+            let url = "{{ url('admin/events') }}/"+id;
+            $.post(url, form, function(res){
+                if(res.success){
+                    toastr.info(res.success, 'Bien hecho!');
+                }else{
+                    toastr.error(res.error, 'Oops!');
+                }
+            })
+        }
     </script>
 @stop

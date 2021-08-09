@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-8">
                 <h1 class="page-title">
-                    <i class="voyager-logbook"></i> Reporte de Agenda Eventos
+                    <i class="voyager-calendar"></i> Reporte de Salones de Eventos
                 </h1>
             </div>
             <div class="col-md-4">
@@ -24,16 +24,16 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body">
-                        <form id="form-report" name="fomr" action="{{ route('reports.appointments.generate') }}" method="POST">
+                        <form id="form-report" name="fomr" action="{{ route('reports.events.generate') }}" method="POST">
                             @csrf
                             <input type="hidden" name="pdf">
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Datos del reporte</label>
-                                    <select name="assistant_id" class="form-control select2">
-                                        <option value="">Todos los asistentes</option>
-                                        @foreach (\App\Models\Assistant::where('deleted_at', NULL)->get() as $item)
-                                            <option value="{{ $item->id }}">{{ $item->full_name }}</option>
+                                    <select name="events_room_id" class="form-control select2">
+                                        <option value="">Todos los Salones de eventos</option>
+                                        @foreach (\App\Models\EventsRoom::where('deleted_at', NULL)->get() as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

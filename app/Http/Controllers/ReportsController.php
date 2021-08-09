@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 // Models
 use App\Models\Appointment;
+use App\Models\Event;
 
 class ReportsController extends Controller
 {
@@ -32,6 +33,32 @@ class ReportsController extends Controller
             return $pdf->stream();
         }else{
             return view('reports.appointments-list', compact('reg', 'range'));
+        }
+    }
+
+    public function events_index(){
+        return view('reports.events-browse');
+    }
+
+    public function events_generate(Request $request){
+        $query_event_room = $request->events_room_id ? 'id = '.$request->events_room_id : 1;
+        $reg = Event::with('events_room')
+                ->whereHas('events_room', function($q) use($query_event_room){
+                    $q->whereRaw($query_event_room);
+                })
+                ->whereDate('start', '>=', $request->start)
+                ->whereDate('finish', '<=', $request->finish)
+                ->where('deleted_at', NULL)->orderBy('start')->get();
+
+        $range = $this->get_range_date($request->start, $request->finish);
+        if($request->pdf){
+            $view = view('reports.events-pdf', compact('reg', 'range'));
+            return $view;
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view);
+            return $pdf->stream();
+        }else{
+            return view('reports.events-list', compact('reg', 'range'));
         }
     }
 

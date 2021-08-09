@@ -53,14 +53,14 @@ class AppointmentsController extends Controller
         DB::beginTransaction();
         try {
             $appointment = Appointment::create([
-                    'user_id' => Auth::user()->id,
-                    'topic' => $request->topic,
-                    'description' => $request->description,
-                    'applicant' => $request->applicant,
-                    'place' => $request->place,
-                    'start' => $request->start,
-                    'finish' => $request->finish
-                ]);
+                'user_id' => Auth::user()->id,
+                'topic' => $request->topic,
+                'description' => $request->description,
+                'applicant' => $request->applicant,
+                'place' => $request->place,
+                'start' => $request->start,
+                'finish' => $request->finish
+            ]);
             
             foreach ($request->assistant_id as $assistant_id) {
                 AppointmentsDetail::create([
@@ -83,7 +83,7 @@ class AppointmentsController extends Controller
             }
             return redirect()->route('appointments.index')->with(['message' => 'Evento guardado exitosamente.', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
-            dd($th);
+            // dd($th);
             DB::rollback();
             if($request->ajax){
                 return response()->json(['error' => 'Ocurrió un erro.']);

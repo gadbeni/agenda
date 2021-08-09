@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Contraseña</label>
-                                    <input type="password" name="password" class="form-control" @if($type == 'create') required @endif>
+                                    <input type="password" name="password" class="form-control" @if($type == 'create' || !$assistant->user) required @endif>
                                     @if($type == 'edit') <small>Si no ingresa nada en el campo contraseña se mantiene la actual.</small> @endif
                                 </div>
                             </div>
