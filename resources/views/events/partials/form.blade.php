@@ -13,8 +13,8 @@
     <textarea name="description" class="form-control" rows="3"></textarea>
 </div>
 <div class="form-group">
-    <label for="events_room_id">Asistente</label>
-    <select name="events_room_id" class="form-control" required>
+    <label for="events_room_id">Lugar del evento</label>
+    <select name="events_room_id" id="select-events_room_id" class="form-control" required>
         @foreach (\App\Models\EventsRoom::where('deleted_at', NULL)->get() as $item)
             <option value="{{ $item->id }}">{{ $item->name }}</option>
         @endforeach

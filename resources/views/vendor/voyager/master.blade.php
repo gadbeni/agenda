@@ -45,6 +45,9 @@
         .voyager .breadcrumb a{
             color:{{ config('voyager.primary_color','#22A7F0') }};
         }
+        .modal .select2-container {
+            width: 100% !important;
+        }
     </style>
 
     @if(!empty(config('voyager.additional_css')))<!-- Additional CSS -->
@@ -147,6 +150,13 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
     @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif
+<script>
+    $(document).ready(function(){
+        $('.form-submit').submit(function(){
+            $('.form-submit .btn-submit').attr('disabled', 'disabled');
+        });
+    });
+</script>
 
 </body>
 </html>

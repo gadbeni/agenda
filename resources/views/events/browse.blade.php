@@ -28,7 +28,7 @@
     </div>
 
     {{-- modal create --}}
-    <form action="{{ route('events.store') }}" id="create_form" method="POST">
+    <form class="form-submit" action="{{ route('events.store') }}" id="create_form" method="POST">
         <div class="modal modal-info fade" tabindex="-1" id="create_modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Crear</button>
+                        <button type="submit" class="btn btn-primary btn-submit"><i class="voyager-edit"></i> Crear</button>
                     </div>
                 </div>
             </div>
@@ -120,21 +120,21 @@
                         </div>
 
                         {{-- Form edit --}}
-                        <form id="form-edit" action="#" method="POST">
+                        <form class="form-submit" id="form-edit" action="#" method="POST">
                             @method('PUT')
                             <div id="div-edit" style="display: none">
                                 @include('events.partials.form')
                                 <div class="row">
                                     <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                        <button type="submit" class="btn btn-primary form-submit">Actualizar</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
 
                         {{-- Form delete --}}
-                        <form id="form-delete" action="#" method="POST">
+                        <form class="form-submit" id="form-delete" action="#" method="POST">
                             @method('DELETE')
                             @csrf
                             <div id="div-delete" style="display: none">
@@ -142,7 +142,7 @@
                                 <div class="row">
                                     <div class="col-md-12 text-right" style="margin-top: 10px; margin-bottom: 10px">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-submit">Sí, eliminar</button>
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +221,9 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(async function() {
+
+            $('#select-events_room_id').select2({dropdownParent: $('#create_modal')});
+
             moment.locale("es");
             var date = new Date();
             var d = date.getDate();

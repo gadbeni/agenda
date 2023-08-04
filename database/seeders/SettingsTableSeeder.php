@@ -79,7 +79,7 @@ class SettingsTableSeeder extends Seeder
                 'id' => 6,
                 'key' => 'admin.title',
                 'display_name' => 'Admin Title',
-                'value' => 'SISADMIN',
+                'value' => 'AGENDA',
                 'details' => '',
                 'type' => 'text',
                 'order' => 1,
@@ -90,7 +90,7 @@ class SettingsTableSeeder extends Seeder
                 'id' => 7,
                 'key' => 'admin.description',
                 'display_name' => 'Admin Description',
-                'value' => 'Sistema Integral de administración GADBENI',
+                'value' => 'Agenda persona del GADBENI',
                 'details' => '',
                 'type' => 'text',
                 'order' => 1,
@@ -128,6 +128,17 @@ class SettingsTableSeeder extends Seeder
                 'type' => 'text',
                 'order' => 5,
                 'group' => 'Admin',
+            ),
+            10 => 
+            array (
+                'id' => 11,
+                'key' => 'server.whatsapp',
+                'display_name' => 'Whatsapp',
+                'value' => '',
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 6,
+                'group' => 'Server',
             ),
         ));
         

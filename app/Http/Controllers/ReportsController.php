@@ -53,7 +53,7 @@ class ReportsController extends Controller
         $range = $this->get_range_date($request->start, $request->finish);
         if($request->pdf){
             $view = view('reports.events-pdf', compact('reg', 'range'));
-            return $view;
+            // return $view;
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view);
             return $pdf->stream();

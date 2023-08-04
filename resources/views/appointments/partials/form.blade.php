@@ -22,7 +22,7 @@
     <input type="text" name="applicant" class="form-control" placeholder="" required />
 </div>
 <div class="form-group">
-    <label for="name">Asistente</label>
+    <label for="name">Asistente(s)</label>
     <select name="assistant_id[]" multiple class="form-control" id="select-assistant_id" required>
         @foreach (\App\Models\Assistant::where('deleted_at', NULL)->get() as $item)
             <option value="{{ $item->id }}">{{ $item->full_name }}</option>

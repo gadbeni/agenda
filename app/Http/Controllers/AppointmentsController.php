@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 // Models
 use App\Models\Appointment;
@@ -72,6 +73,15 @@ class AppointmentsController extends Controller
                 if($assistant->email){
                     try {
                         SendEmail::dispatch($assistant->email, 'Nuevo evento agendado', $request->topic, $request->description, $request->applicant, $request->place, $this->get_range_date($request->start, $request->finish));
+                    } catch (\Throwable $th) {}
+                }
+                if(setting('server.whatsapp') && $assistant->phone){
+                    try {
+                        $phone = strlen($assistant->phone) == 8 ? '591'.$assistant->phone : $assistant->phone;
+                        Http::post(setting('server.whatsapp').'/send', [
+                            'phone' => $phone,
+                            'text' => 'Ha sido designado para asistir al evento *'.$request->description.'* en *'.$request->place.'* en fecha *'.date('d/m/Y', strtotime($request->start)).'*',
+                        ]);
                     } catch (\Throwable $th) {}
                 }
             }
